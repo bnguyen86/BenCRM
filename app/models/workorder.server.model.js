@@ -16,6 +16,19 @@ var WorkorderSchema = new Schema({
 		required: 'Please fill Workorder name',
 		trim: true
 	},
+	number: {
+		type: String,
+		trim: true,
+		unique: true
+	},
+	contacts: [{
+		type: Schema.ObjectId,
+		ref: 'Contact'
+	}],
+	account: {
+		type: Schema.ObjectId,
+		ref: 'Account'
+	},
 	created: {
 		type: Date,
 		default: Date.now

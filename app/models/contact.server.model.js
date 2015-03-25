@@ -10,11 +10,31 @@ var mongoose = require('mongoose'),
  * Contact Schema
  */
 var ContactSchema = new Schema({
-	name: {
+	name: {		
+		first: {
+			type: String,
+			trim: true
+		},		
+		last: {
+			type: String,
+			trim: true
+		}	
+	},
+	address: {
 		type: String,
-		default: '',
-		required: 'Please fill Contact name',
 		trim: true
+	},
+	phone: {
+		type: String,
+		trim: true
+	},
+	email: {
+		type: String,
+		trim: true
+	},
+	account: {
+		type: Schema.ObjectId,
+		ref: 'Account'
 	},
 	created: {
 		type: Date,

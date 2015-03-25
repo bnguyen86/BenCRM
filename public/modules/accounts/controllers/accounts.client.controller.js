@@ -9,7 +9,11 @@ angular.module('accounts').controller('AccountsController', ['$scope', '$statePa
 		$scope.create = function() {
 			// Create new Account object
 			var account = new Accounts ({
-				name: this.name
+				name: this.name,
+				address: this.address,
+				phone: this.phone,
+				email: this.email,
+				contacts : this.contacts
 			});
 
 			// Redirect after save

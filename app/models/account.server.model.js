@@ -16,6 +16,41 @@ var AccountSchema = new Schema({
 		required: 'Please fill Account name',
 		trim: true
 	},
+	address: {
+		street: {
+			type: String,
+			trim: true
+		},
+		city: {
+			type: String,
+			trim: true
+		},
+		province_state: {
+			type: String,
+			trim: true
+		},
+		country: {
+			type: String,
+			trim: true
+		},
+		postal_zip_code: {
+			type: String,
+			trim: true,
+			uppercase: true
+		}
+	},
+	phone: {
+		type: String,
+		trim: true
+	},
+	email: {
+		type: String,
+		trim: true
+	},
+	contacts: [{
+		type: Schema.ObjectId,
+		ref: 'Contact'
+	}],
 	created: {
 		type: Date,
 		default: Date.now
