@@ -1,6 +1,13 @@
 <section data-ng-controller="AccountsController" data-ng-init="findOne()">
 	<div class="page-header">
-		<h1 data-ng-bind="account.name"></h1>
+		<h1>{{account.name}}</h1>
+		<address>
+			<br>{{account.address.street}}
+			<br>{{account.address.city}}, {{account.name.province_state}}
+			<br>{{account.address.country}}, {{account.address.postal_zip_code}}
+			<br>{{account.phone}}
+			<br><a href="mailto:{{account.email}}">{{account.email}}</a>
+		</address>
 	</div>
 	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == account.user._id))">
 		<a class="btn btn-primary" href="/#!/accounts/{{account._id}}/edit">

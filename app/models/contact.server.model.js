@@ -21,8 +21,27 @@ var ContactSchema = new Schema({
 		}	
 	},
 	address: {
-		type: String,
-		trim: true
+		street: {
+			type: String,
+			trim: true
+		},
+		city: {
+			type: String,
+			trim: true
+		},
+		province_state: {
+			type: String,
+			trim: true
+		},
+		country: {
+			type: String,
+			trim: true
+		},
+		postal_zip_code: {
+			type: String,
+			trim: true,
+			uppercase: true
+		}
 	},
 	phone: {
 		type: String,

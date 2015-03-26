@@ -47,10 +47,6 @@ var AccountSchema = new Schema({
 		type: String,
 		trim: true
 	},
-	contacts: [{
-		type: Schema.ObjectId,
-		ref: 'Contact'
-	}],
 	created: {
 		type: Date,
 		default: Date.now

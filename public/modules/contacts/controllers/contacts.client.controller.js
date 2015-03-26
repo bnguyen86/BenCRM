@@ -1,15 +1,19 @@
 'use strict';
 
 // Contacts controller
-angular.module('contacts').controller('ContactsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Contacts',
-	function($scope, $stateParams, $location, Authentication, Contacts) {
+angular.module('contacts').controller('ContactsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Contacts','Accounts','$modal',
+	function($scope, $stateParams, $location, Authentication, Contacts, Accounts, $modal) {
 		$scope.authentication = Authentication;
 
 		// Create new Contact
 		$scope.create = function() {
 			// Create new Contact object
 			var contact = new Contacts ({
-				name: this.name
+				name: this.name,
+				address: this.address,
+				phone: this.phone,
+				email: this.email,
+				account: this.account
 			});
 
 			// Redirect after save
@@ -62,5 +66,24 @@ angular.module('contacts').controller('ContactsController', ['$scope', '$statePa
 				contactId: $stateParams.contactId
 			});
 		};
+
+		//Open moddal
+		$scope.open = function(){
+		    var modalInstance = $modal.open({
+		        templateUrl: 'accountsModal.html',        
+		        controller: 'ContactsModalController'
+		        
+		    });
+		};
+
+		// Get list of accounts to asscociate with the contact
+		$scope.findAccounts = function(){
+			$scope.accounts = Accounts.query();
+		};
 	}
 ]);
+
+angular.module('contacts').controller('ContactsModalController', ['$scope', '$stateParams', '$location', 'Authentication', 'Contacts','Accounts','$modal',
+	function($scope, $stateParams, $location, Authentication, Contacts, Accounts, $modal) {
+
+	}]);
