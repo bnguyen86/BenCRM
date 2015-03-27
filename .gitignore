@@ -10,3 +10,7 @@ app/tests/coverage/
 data/
 data/*
 *.sublime*
+config/env/development.js
+config/env/production.js
+config/env/secure.js
+config/env/test.js
