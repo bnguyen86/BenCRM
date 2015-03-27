@@ -13,7 +13,7 @@ angular.module('contacts').controller('ContactsController', ['$scope', '$statePa
 				address: this.address,
 				phone: this.phone,
 				email: this.email,
-				account: this.account
+				account: this.account._id
 			});
 
 			// Redirect after save
@@ -71,19 +71,33 @@ angular.module('contacts').controller('ContactsController', ['$scope', '$statePa
 		$scope.open = function(){
 		    var modalInstance = $modal.open({
 		        templateUrl: 'accountsModal.html',        
-		        controller: 'ContactsModalController'
+		        controller: 'ContactsModalController',
+		        resolve: {
+		        	accounts: function(){
+		        		return Accounts.query();
+		        	}
+		        }
 		        
 		    });
-		};
-
-		// Get list of accounts to asscociate with the contact
-		$scope.findAccounts = function(){
-			$scope.accounts = Accounts.query();
+		    modalInstance.result.then(function(account) {
+		            $scope.account = account;
+		        },
+		        function() {
+		            console.log('Modal dismissed at: ' + new Date());
+		        });
 		};
 	}
 ]);
 
-angular.module('contacts').controller('ContactsModalController', ['$scope', '$stateParams', '$location', 'Authentication', 'Contacts','Accounts','$modal',
-	function($scope, $stateParams, $location, Authentication, Contacts, Accounts, $modal) {
+angular.module('contacts').controller('ContactsModalController', ['$scope', '$modalInstance','accounts', function($scope, $modalInstance, accounts) {
+	$scope.accounts = accounts;
+	$scope.selected = {account:null};
 
-	}]);
+	$scope.ok = function () {
+		$modalInstance.close($scope.selected.account);
+	};
+
+	$scope.cancel = function () {
+		$modalInstance.dismiss('cancel');
+	};
+}]);
