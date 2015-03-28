@@ -54,7 +54,8 @@ var AccountSchema = new Schema({
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'
-	}
+	},
+	contacts: [Schema.Types.Mixed]
 });
 
 mongoose.model('Account', AccountSchema);

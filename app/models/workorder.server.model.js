@@ -12,8 +12,6 @@ var mongoose = require('mongoose'),
 var WorkorderSchema = new Schema({
 	name: {
 		type: String,
-		default: '',
-		required: 'Please fill Workorder name',
 		trim: true
 	},
 	number: {
@@ -21,6 +19,22 @@ var WorkorderSchema = new Schema({
 		trim: true,
 		unique: true
 	},
+	line_items: [{
+		uom: {
+			type: String,
+			trim: true
+		},
+		description: {
+			type: String,
+			trim: true
+		},
+		qty: {
+			type: Number
+		},
+		price_per_unit: {
+			type: Number
+		}
+	}],	
 	contacts: [{
 		type: Schema.ObjectId,
 		ref: 'Contact'

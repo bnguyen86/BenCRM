@@ -92,7 +92,19 @@ exports.accountByID = function(req, res, next, id) {
 		if (err) return next(err);
 		if (! account) return next(new Error('Failed to load Account ' + id));
 		req.account = account ;
-		next();
+
+		var Contact = mongoose.model('Contact');
+		Contact.find({account : account._id}).sort('-created').exec(function(err, contacts) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				req.account.contacts = contacts;
+				next();
+			}
+		});
+	
 	});
 };
 

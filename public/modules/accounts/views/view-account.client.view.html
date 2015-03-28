@@ -8,6 +8,18 @@
 			<br>{{account.phone}}
 			<br><a href="mailto:{{account.email}}">{{account.email}}</a>
 		</address>
+		<h3>Contacts</h3>
+		<div ng-repeat="contact in account.contacts">
+
+		<h4>{{contact.name.last}}, {{contact.name.first}}</h4>
+			<address>
+				{{contact.address.street}}
+				<br>{{contact.address.city}}, {{contact.name.province_state}}
+				<br>{{contact.address.country}}, {{contact.address.postal_zip_code}}
+				<br>{{contact.phone}}
+				<br><a href="mailto:{{contact.email}}">{{contact.email}}</a>
+			</address>
+		</div>
 	</div>
 	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == account.user._id))">
 		<a class="btn btn-primary" href="/#!/accounts/{{account._id}}/edit">

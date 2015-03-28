@@ -88,7 +88,7 @@ exports.list = function(req, res) {
  * Contact middleware
  */
 exports.contactByID = function(req, res, next, id) { 
-	Contact.findById(id).populate('user', 'displayName').exec(function(err, contact) {
+	Contact.findById(id).populate('user', 'displayName').populate('account').exec(function(err, contact) {
 		if (err) return next(err);
 		if (! contact) return next(new Error('Failed to load Contact ' + id));
 		req.contact = contact ;

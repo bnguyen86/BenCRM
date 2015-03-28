@@ -2,11 +2,20 @@
 	<div class="page-header">
 		<h1>{{contact.name.last}}, {{contact.name.first}}</h1>
 		<address>
-			<br>{{contact.address.street}}
+			{{contact.address.street}}
 			<br>{{contact.address.city}}, {{contact.name.province_state}}
 			<br>{{contact.address.country}}, {{contact.address.postal_zip_code}}
 			<br>{{contact.phone}}
 			<br><a href="mailto:{{contact.email}}">{{contact.email}}</a>
+		</address>
+		<h3>Account:</h3>
+		<h4>{{contact.account.name}}</h4>
+		<address>
+			{{contact.account.address.street}}
+			<br>{{contact.account.address.city}}, {{contact.account.name.province_state}}
+			<br>{{contact.account.address.country}}, {{contact.account.address.postal_zip_code}}
+			<br>{{contact.account.phone}}
+			<br><a href="mailto:{{contact.account.email}}">{{contact.account.email}}</a>
 		</address>
 	</div>
 	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == contact.user._id))">
