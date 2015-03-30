@@ -47,6 +47,7 @@ angular.module('contacts').controller('ContactsController', ['$scope', '$statePa
 		// Update existing Contact
 		$scope.update = function() {
 			var contact = $scope.contact;
+			contact.account = this.account._id;
 
 			contact.$update(function() {
 				$location.path('contacts/' + contact._id);
@@ -64,10 +65,12 @@ angular.module('contacts').controller('ContactsController', ['$scope', '$statePa
 		$scope.findOne = function() {
 			$scope.contact = Contacts.get({ 
 				contactId: $stateParams.contactId
-			});
+			}, function(){
+				$scope.account = $scope.contact.account;
+			});			
 		};
 
-		//Open moddal
+		//Open modal
 		$scope.open = function(){
 		    var modalInstance = $modal.open({
 		        templateUrl: 'accountsModal.html',        
