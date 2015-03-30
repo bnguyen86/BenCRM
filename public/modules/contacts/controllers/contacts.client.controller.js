@@ -74,7 +74,7 @@ angular.module('contacts').controller('ContactsController', ['$scope', '$statePa
 		$scope.open = function(){
 		    var modalInstance = $modal.open({
 		        templateUrl: 'accountsModal.html',        
-		        controller: 'ContactsModalController',
+		        controller: 'AccountModalController',
 		        resolve: {
 		        	accounts: function(){
 		        		return Accounts.query();
@@ -92,15 +92,3 @@ angular.module('contacts').controller('ContactsController', ['$scope', '$statePa
 	}
 ]);
 
-angular.module('contacts').controller('ContactsModalController', ['$scope', '$modalInstance','accounts', function($scope, $modalInstance, accounts) {
-	$scope.accounts = accounts;
-	$scope.selected = {account:null};
-
-	$scope.ok = function () {
-		$modalInstance.close($scope.selected.account);
-	};
-
-	$scope.cancel = function () {
-		$modalInstance.dismiss('cancel');
-	};
-}]);

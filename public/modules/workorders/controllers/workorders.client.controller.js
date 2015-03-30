@@ -1,8 +1,8 @@
 'use strict';
 
 // Workorders controller
-angular.module('workorders').controller('WorkordersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Workorders',
-	function($scope, $stateParams, $location, Authentication, Workorders) {
+angular.module('workorders').controller('WorkordersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Workorders', 'Accounts', '$modal',
+	function($scope, $stateParams, $location, Authentication, Workorders, Accounts, $modal) {
 		$scope.authentication = Authentication;
 
 		// Create new Workorder
@@ -61,6 +61,54 @@ angular.module('workorders').controller('WorkordersController', ['$scope', '$sta
 			$scope.workorder = Workorders.get({ 
 				workorderId: $stateParams.workorderId
 			});
+		};
+
+		//Add line item
+		$scope.items = [];
+		$scope.addItem = function(item) {
+			var newItem = {
+					uom: item.uom,
+					description: item.description,
+					qty: item.qty,
+					price_per_unit: item.price_per_unit
+				};
+			$scope.items.push(newItem);
+			this.item = null;
+			this.itemTotal = $scope.findTotal($scope.items);
+		};
+
+		$scope.deleteItem = function(item) {
+			for(var i = 0 ; i < $scope.items.length ; i++){
+				if($scope.items[i] === item){
+					$scope.items.splice(i,1);
+				}
+			}
+
+			this.itemTotal = $scope.findTotal($scope.items);
+		};
+
+		$scope.findTotal = function(itemArray){
+			return 999;
+		};
+
+		//Open Account modal
+		$scope.open = function(){
+		    var modalInstance = $modal.open({
+		        templateUrl: 'accountsModal.html',        
+		        controller: 'AccountModalController',
+		        resolve: {
+		        	accounts: function(){
+		        		return Accounts.query();
+		        	}
+		        }
+		        
+		    });
+		    modalInstance.result.then(function(account) {
+		            $scope.account = account;
+		        },
+		        function() {
+		            console.log('Modal dismissed at: ' + new Date());
+		        });
 		};
 	}
 ]);
