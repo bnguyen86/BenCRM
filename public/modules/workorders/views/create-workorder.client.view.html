@@ -28,19 +28,27 @@
                             <div class="input-group">
                                 <input type="text" readonly="readonly" data-ng-model="account.name" class="form-control" placeholder="Account">
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-primary" ng-click="open()">
+                                    <button type="button" class="btn btn-primary" ng-click="openAccounts()">
                                         <i class="fa fa-search"></i>
                                     </button>
                                 </span>
                                 <input type="hidden" data-ng-model="account._id" id="account" class="form-control" placeholder="Account">
                             </div>
                         </div>
+                        <label>Contacts:</label>
+                        <ul ng-repeat="contact in contacts">
+                            <li>
+                                {{contact.name.last}}, {{contact.name.first}} - {{contact.phone}}
+                            </li>
+                        </ul>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-3 col-sm-offset-3">
                         <div class="form-group">
-                            <label class="control-label" for="name">Contacts</label>
+                            <label class="control-label" for="name">Add Contacts</label>
                             <div class="controls">
-                                <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name">
+                                <button type="button" class="btn btn-primary" ng-click="openContacts()" ng-disabled="account == null">
+                                        <i class="fa fa-plus"></i>&nbsp;Add Contacts
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -181,6 +189,22 @@
         <div class="modal-body">
             <div ng-repeat="a in accounts">
                 <input type="radio" name="accountRadio" ng-model="selected.account" ng-value="a"> {{a.name}} - {{a.address.street}}, {{a.address.city}}, {{a.address.province_state}}
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
+            <button type="button" class="btn btn-primary" ng-click="ok()">Select</button>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="contactsModal.html">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Contacts</h4>
+        </div>
+        <div class="modal-body">
+            <div ng-repeat="c in contacts">
+                <input type="checkbox" name="contacts" ng-model="c.checked" ng-change="updateContactList()"> {{c.name.first}}, {{c.name.last}} - {{c.address.street}}, {{c.address.city}}, {{c.address.province_state}}
             </div>
         </div>
         <div class="modal-footer">
