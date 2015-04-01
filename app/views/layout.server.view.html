@@ -42,6 +42,30 @@
 </head>
 
 <body class="ng-cloak">
+	<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+    <md-toolbar class="md-theme-indigo">
+        <h1 class="md-toolbar-tools">Menu</h1>
+    </md-toolbar>
+    <md-content class="md-padding" ng-controller="HeaderController">
+        <md-button ng-click="close()" class="md-primary" hide-gt-md>
+            Close Sidenav Left
+        </md-button>
+        <ul class="nav navbar-nav" data-ng-if="menu.shouldRender(authentication.user);">
+          <li data-ng-repeat="item in menu.items | orderBy: 'position'" data-ng-if="item.shouldRender(authentication.user);" ng-switch="item.menuItemType" ui-route="{{item.uiRoute}}" class="{{item.menuItemClass}}" ng-class="{active: ($uiRoute)}" dropdown="item.menuItemType === 'dropdown'">
+            <a ng-switch-when="dropdown" class="dropdown-toggle">
+              <span data-ng-bind="item.title"></span>
+              <b class="caret"></b>
+            </a>
+            <ul ng-switch-when="dropdown" class="dropdown-menu">
+              <li data-ng-repeat="subitem in item.items | orderBy: 'position'" data-ng-if="subitem.shouldRender(authentication.user);" ui-route="{{subitem.uiRoute}}" ng-class="{active: $uiRoute}">
+                <a href="/#!/{{subitem.link}}" data-ng-bind="subitem.title"></a>
+              </li>
+            </ul>
+            <a ng-switch-default href="/#!/{{item.link}}" data-ng-bind="item.title"></a>
+          </li>
+        </ul>
+    </md-content>
+</md-sidenav>
 	<header data-ng-include="'/modules/core/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
 	<section class="content">
 		<section class="container">
