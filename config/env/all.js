@@ -15,9 +15,13 @@ module.exports = {
 			css: [
 				'public/lib/bootstrap/dist/css/bootstrap.css',
 				'public/lib/bootstrap/dist/css/bootstrap-theme.css',
+				'public/lib/angular-material/angular-material.min.css',
+				'//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'
 			],
 			js: [
 				'public/lib/angular/angular.js',
+				'public/lib/angular-material/angular-material.min.js',
+				'public/lib/angular-aria/angular-aria.min.js',
 				'public/lib/angular-resource/angular-resource.js', 
 				'public/lib/angular-cookies/angular-cookies.js', 
 				'public/lib/angular-animate/angular-animate.js', 
