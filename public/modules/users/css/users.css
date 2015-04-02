@@ -12,3 +12,23 @@
 	right: 10px;
 	position: absolute;
 }
+
+.fa-facebook{
+	color: #3b5998;
+}
+
+.fa-google-plus{
+	color: #d62d20;
+}
+
+.fa-twitter{
+	color: #55acee;
+}
+
+.fa-linkedin{
+	color: #0077b5;
+}
+
+.fa-github{
+	color: #7b0099;
+}
