@@ -32,3 +32,7 @@
 .fa-github{
 	color: #7b0099;
 }
+
+.md-button:not(.md-fab){
+	min-width: 1px;
+}

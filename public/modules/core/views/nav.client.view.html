@@ -1,24 +1,28 @@
-<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" flex data-ng-show="authentication.user">
-  <md-toolbar class="md-theme-indigo" ng-click="close()">
-      <h1 class="md-toolbar-tools">Menu</h1>
-  </md-toolbar>
-  <md-list>     
-        <md-item ng-repeat-start="item in menu.items | orderBy: 'position'" data-ng-if="item.shouldRender(authentication.user);" ng-switch="item.menuItemType" ui-route="{{item.uiRoute}}" class="{{item.menuItemClass}}" ng-class="{active: ($uiRoute)}">
-            <md-item-content>
-              <md-button href="/#!/{{item.link}}" class="md-primary" ng-click="close()">
-                <b>
-                  <i class="fa fa-list"></i> {{item.title}}
-                </b>
-              </md-button>
-            </md-item-content>
-        </md-item>
-        <md-item ng-repeat="subitem in item.items | orderBy: 'position'" data-ng-if="subitem.shouldRender(authentication.user);" ui-route="{{subitem.uiRoute}}" ng-class="{active: $uiRoute}">
-          <md-item-content>
-            <md-button href="/#!/{{subitem.link}}" ng-click="close()">
-              {{subitem.title}}
-            </md-button>
-          </md-item-content>
-        </md-item>      
-      <md-divider ng-repeat-end></md-divider>
-  </md-list>
-</md-sidenav>
+<div ng-controller="HeaderController">
+  <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" flex data-ng-show="authentication.user">
+    <md-toolbar class="md-theme-indigo" ng-click="close()">
+        <h1 class="md-toolbar-tools">Menu</h1>
+    </md-toolbar>
+    <md-content flex role="navigation">
+      <md-list>     
+          <md-item ng-repeat-start="item in menu.items | orderBy: 'position'" data-ng-if="item.shouldRender(authentication.user);" ng-switch="item.menuItemType" ui-route="{{item.uiRoute}}" class="{{item.menuItemClass}}" ng-class="{parentActive: ($uiRoute)}">
+                <md-item-content>
+                  <md-button href="/#!/{{item.link}}" class="md-primary" ng-click="close()">
+                    <b>
+                      <i class="fa fa-list"></i> {{item.title}}
+                    </b>
+                  </md-button>
+                </md-item-content>
+            </md-item>
+            <md-item ng-repeat="subitem in item.items | orderBy: 'position'" data-ng-if="subitem.shouldRender(authentication.user);" ui-route="{{subitem.uiRoute}}" ng-class="{active: $uiRoute}">
+              <md-item-content>
+                <md-button href="/#!/{{subitem.link}}" ng-click="close()">
+                  {{subitem.title}}
+                </md-button>
+              </md-item-content>
+            </md-item>      
+          <md-divider ng-repeat-end></md-divider>
+      </md-list>
+    </md-content>
+  </md-sidenav>
+</div>
