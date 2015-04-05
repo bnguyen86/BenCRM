@@ -1,15 +1,15 @@
 'use strict';
 
-angular.module('contacts-modal').controller('ContactsModalController', ['$scope', '$modalInstance','contactList','$filter',
-	function($scope, $modalInstance, contactList, $filter) {
+angular.module('contacts-modal').controller('ContactsModalController', ['$scope', '$mdDialog','contactList','$filter',
+	function($scope, $mdDialog, contactList, $filter) {
 		$scope.contacts = contactList;
 
 		$scope.ok = function () {
-			$modalInstance.close($scope.selected);
+			$mdDialog.hide($scope.selected);
 		};
 
 		$scope.cancel = function () {
-			$modalInstance.dismiss('cancel');
+			$mdDialog.cancel();
 		};
 
 		$scope.updateContactList = function () {

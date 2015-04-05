@@ -21,7 +21,7 @@
                 <md-divider></md-divider>
                 <md-content layout="row" layout-padding>
                     <md-content flex="50">
-                        <md-button type="button" class="md-icon-button md-primary md-raised" ng-click="openAccounts()">
+                        <md-button type="button" class="md-icon-button md-primary md-raised" ng-click="openAccounts($event)">
                             <i class="fa fa-search"></i> Lookup Account
                         </md-button>
                         <md-input-container>
@@ -31,7 +31,7 @@
                         <input hide data-ng-model="account._id" id="account" placeholder="Account">
                     </md-content>
                     <md-content flex="50">
-                        <md-button type="button" class="md-icon-button md-primary md-raised" ng-click="openContacts()" ng-disabled="account == null">
+                        <md-button type="button" class="md-icon-button md-primary md-raised" ng-click="openContacts($event)" ng-disabled="account == null">
                             <i class="fa fa-plus"></i>&nbsp;Add Contacts
                         </md-button>
                         <ul ng-repeat="contact in contacts">
@@ -141,34 +141,51 @@
 
 
     <script type="text/ng-template" id="accountsModal.html">
-        <div class="modal-header">
-            <button type="button" class="close" ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Accounts</h4>
-        </div>
-        <div class="modal-body">
-            <div ng-repeat="a in accounts">
-                <input type="radio" name="accountRadio" ng-model="selected.account" ng-value="a"> {{a.name}} - {{a.address.street}}, {{a.address.city}}, {{a.address.province_state}}
+        <md-dialog aria-label="Accounts Dialog">
+            <md-toolbar class="md-whiteframe-z1">
+                <div class="md-toolbar-tools">
+                    Accounts
+                </div>
+            </md-toolbar>
+            <md-content>
+                <md-radio-group ng-model="selected.account">
+                    <md-radio-button ng-repeat="a in accounts" ng-value="a">
+                         {{a.name}} - {{a.address.street}}, {{a.address.city}}, {{a.address.province_state}}
+                    </md-radio-button>
+                </md-radio-group>
+            </md-content>
+            <div class="md-actions">
+                <md-button class="md-raised" ng-click="cancel()">
+                    Cancel
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="ok()">
+                    Select
+                </md-button>
             </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
-            <button type="button" class="btn btn-primary" ng-click="ok()">Select</button>
-        </div>
+        </md-dialog>
     </script>
 
     <script type="text/ng-template" id="contactsModal.html">
-        <div class="modal-header">
-            <button type="button" class="close" ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Contacts</h4>
-        </div>
-        <div class="modal-body">
-            <div ng-repeat="c in contacts">
-                <input type="checkbox" name="contacts" ng-model="c.checked" ng-change="updateContactList()"> {{c.name.first}}, {{c.name.last}} - {{c.address.street}}, {{c.address.city}}, {{c.address.province_state}}
+        <md-dialog aria-label="Conacts Dialog">
+            <md-toolbar class="md-whiteframe-z1">
+                <div class="md-toolbar-tools">
+                    Contacts
+                </div>
+            </md-toolbar>
+            <md-content>
+                <div ng-repeat="c in contacts">
+                    <md-checkbox name="contacts" ng-model="c.checked" ng-change="updateContactList()"> {{c.name.first}}, {{c.name.last}} - {{c.address.street}}, {{c.address.city}}, {{c.address.province_state}}
+                    </md-checkbox>
+                </div>
+            </md-content>
+            <div class="md-actions">
+                <md-button class="md-raised" ng-click="cancel()">
+                    Cancel
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="ok()">
+                    Select
+                </md-button>
             </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
-            <button type="button" class="btn btn-primary" ng-click="ok()">Select</button>
-        </div>
+        </md-dialog>
     </script>
 </section>

@@ -1,8 +1,8 @@
 'use strict';
 
 // Workorders controller
-angular.module('workorders').controller('WorkordersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Workorders', 'Accounts', '$modal',
-	function($scope, $stateParams, $location, Authentication, Workorders, Accounts, $modal) {
+angular.module('workorders').controller('WorkordersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Workorders', 'Accounts', '$mdDialog',
+	function($scope, $stateParams, $location, Authentication, Workorders, Accounts, $mdDialog) {
 		$scope.authentication = Authentication;
 
 		// Create new Workorder
@@ -109,21 +109,23 @@ angular.module('workorders').controller('WorkordersController', ['$scope', '$sta
 		};
 
 		//Open Account modal
-		$scope.openAccounts = function(){
-		    var modalInstance = $modal.open({
+		$scope.openAccounts = function(event){
+		    $mdDialog.show({
+		    	targetEvent: event,
 		        templateUrl: 'accountsModal.html',        
 		        controller: 'AccountModalController',
+		        clickOutsideToClose: true,
 		        resolve: {
 		        	accounts: function(){
 		        		return Accounts.query();
 		        	}
 		        }
 		        
-		    });
-		    modalInstance.result.then(function(account) {
+		    })
+		    .then(function(account) {
 		            $scope.account = Accounts.get({ 
-											accountId: account._id
-										});
+						accountId: account._id
+					});
 		        },
 		        function() {
 		            console.log('Modal dismissed at: ' + new Date());
@@ -131,24 +133,24 @@ angular.module('workorders').controller('WorkordersController', ['$scope', '$sta
 		};
 
 		//Open contacts modal
-		$scope.openContacts = function(){
+		$scope.openContacts = function(event){
 			if($scope.account === null || $scope.account === undefined){
 				console.log('No account chosen');
 				return null;
 			}
 
-		    var modalInstance = $modal.open({
+		    $mdDialog.show({
+		    	targetEvent: event,
 		        templateUrl: 'contactsModal.html',        
 		        controller: 'ContactsModalController',
 		        resolve: {
 		        	contactList: function(){
-		        		return $scope.account.contacts;
-		        		
+		        		return $scope.account.contacts;		        		
 		        	}
 		        }
 		        
-		    });
-		    modalInstance.result.then(function(contacts) {
+		    })
+		    .then(function(contacts) {
 		            $scope.contacts = contacts;
 		        },
 		        function() {

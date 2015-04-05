@@ -1,16 +1,16 @@
 'use strict';
 
-angular.module('account-modal').controller('AccountModalController', ['$scope', '$modalInstance','accounts',
-	function($scope, $modalInstance, accounts) {
+angular.module('account-modal').controller('AccountModalController', ['$scope', '$mdDialog','accounts',
+	function($scope, $mdDialog, accounts) {
 		$scope.accounts = accounts;
 		$scope.selected = {account:null};
 
 		$scope.ok = function () {
-			$modalInstance.close($scope.selected.account);
+			$mdDialog.hide($scope.selected.account);
 		};
 
 		$scope.cancel = function () {
-			$modalInstance.dismiss('cancel');
+			$mdDialog.cancel();
 		};
 	}
 ]);
