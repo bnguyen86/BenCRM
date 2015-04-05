@@ -67,12 +67,11 @@
                         <b ng-show="item.qty*item.price_per_unit">{{item.qty*item.price_per_unit | currency  : '$' : fractionSize: 2}}</b>
                         <md-content layout="column" layout-padding layout-align="center center">
                             <md-button type="button" class="md-primary md-raised" ng-click="addItem(item)">
-                                <i class="fa fa-plus"></i>&nbsp;Add
+                                <i class="fa fa-plus"></i>&nbsp;Add Item
                             </md-button>
                         </md-content>                                              
-                    </md-content>
-                <md-button type="submit" class="md-primary md-raised">Submit New Work Order</md-button>
-            </form>                
+                    </md-content>               
+                          
             <md-divider></md-divider>
             <md-subheader>Work Order Line Items</md-subheader>
             <table class="table">
@@ -131,7 +130,11 @@
                                     <span ng-if="itemTotal">{{itemTotal | currency  : '$' : fractionSize: 2}}</span>
                                 </th>
                             </tfoot>
-            </table> 
+            </table>
+            <div layout="row" layout-align="center center">
+                <md-button type="submit" class="md-primary md-raised">Submit New Work Order</md-button>
+            </div>
+            </form>
         </md-card>
     </md-content>
 </div>

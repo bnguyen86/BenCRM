@@ -15,9 +15,15 @@
 					<label for="password">Password</label>
 					<input type="password" id="password" name="password" data-ng-model="credentials.password" required>
 				</md-input-container>
-				<div layout="row" layout-align="center center">
-					<md-button href="/#!/signup">Sign up</md-button>
-					<md-button type="submit" class="md-raised md-primary">Sign in</md-button>				
+				<div layout="column" layout-align="center center">
+					<div layout="row" layout-align="center center">
+						<md-button href="/#!/signup">Sign up</md-button>
+						<md-button type="submit" class="md-raised md-primary">Sign in</md-button>
+					</div>
+					<div data-ng-show="error" class="text-center text-danger">
+						<strong data-ng-bind="error"></strong>
+					</div>
+					<a href="/#!/password/forgot">Forgot your password?</a>
 				</div>
 			</form>
 		</md-content>
@@ -40,5 +46,6 @@
 				<md-icon md-font-icon="fa fa-github fa-2x"></md-icon>
 			</md-button>		
 		</section>
+
 	</md-card>
 </div>
