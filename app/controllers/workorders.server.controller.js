@@ -88,7 +88,12 @@ exports.list = function(req, res) {
  * Workorder middleware
  */
 exports.workorderByID = function(req, res, next, id) { 
-	Workorder.findById(id).populate('user', 'displayName').exec(function(err, workorder) {
+	Workorder
+	.findById(id)
+	.populate('user', 'displayName')
+	.populate('account')
+	.populate('contacts')
+	.exec(function(err, workorder) {
 		if (err) return next(err);
 		if (! workorder) return next(new Error('Failed to load Workorder ' + id));
 		req.workorder = workorder ;

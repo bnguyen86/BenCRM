@@ -1,23 +1,191 @@
-<section data-ng-controller="WorkordersController" data-ng-init="findOne()">
-    <div class="page-header">
-        <h1>Edit Workorder</h1>
-    </div>
-    <div class="col-md-12">
-        <form class="form-horizontal" data-ng-submit="update()" novalidate>
-            <fieldset>
-                <div class="form-group">
-                    <label class="control-label" for="name">Name</label>
-                    <div class="controls">
-                        <input type="text" data-ng-model="workorder.name" id="name" class="form-control" placeholder="Name" required>
-                    </div>
+<div layout="column" layout-fill layout-align="center center" data-ng-controller="WorkordersController" ng-init="findOne()">
+    <md-content layout-fill>
+        <md-card>
+            <md-toolbar class="md-theme-indigo" class="md-whiteframe-z1">
+                <div class="md-toolbar-tools">
+                    New Work Order
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Update" class="btn btn-default">
+            </md-toolbar>
+            <form ng-submit="update()">
+                <md-content layout="row" layout-padding>
+                    <md-input-container flex="40">
+                        <label class="control-label" for="name">Name</label>
+                        <input type="text" data-ng-model="workorder.name" id="name">                            
+                    </md-input-container>
+                    <div flex="20"></div>
+                    <md-input-container flex="40">
+                        <label class="control-label" for="name">Number</label>
+                        <input type="text" data-ng-model="workorder.number" id="number" required>
+                    </md-input-container>
+                </md-content>
+                <md-divider></md-divider>
+                <md-content layout="row" layout-padding>
+                    <md-content flex="50">
+                        <md-button type="button" class="md-icon-button md-primary md-raised" ng-click="openAccounts($event)">
+                            <i class="fa fa-search"></i> Lookup Account
+                        </md-button>
+                        <md-input-container>
+                            <label class="control-label" for="account">Account</label>
+                            <input type="text" readonly="readonly" data-ng-model="workorder.account.name">
+                        </md-input-container>
+                        <input hide data-ng-model="workorder.account._id" id="account" placeholder="Account">
+                    </md-content>
+                    <md-content flex="50">
+                        <md-button type="button" class="md-icon-button md-primary md-raised" ng-click="openContacts($event)" ng-disabled="workorder.account == null">
+                            <i class="fa fa-plus"></i>&nbsp;Add Contacts
+                        </md-button>
+                        <ul ng-repeat="contact in workorder.contacts">
+                            <li>
+                                {{contact.name.last}}, {{contact.name.first}} - {{contact.phone}}
+                            </li>
+                        </ul>
+                    </md-content>                    
+                </md-content>
+                    <md-divider></md-divider>
+                    <md-content layout="column" layout-padding>
+                        <md-subheader>Add Work Order Line Items</md-subheader>
+                        <md-input-container>
+                            <label class="control-label" for="description">Description</label>
+                                <input type="text" data-ng-model="workorder.item.description" id="description">
+                        </md-input-container>
+                        <md-content layout="row">
+                        <md-input-container flex="33">
+                            <label class="control-label" for="qty">Quantity</label>
+                            <input type="number" data-ng-model="workorder.item.qty" id="description">                                                
+                        </md-input-container>
+                        <md-input-container flex="33">
+                            <label class="control-label" for="description">Unit</label>
+                            <input type="text" data-ng-model="workorder.item.uom" id="uom">                                                
+                        </md-input-container>
+                        <md-input-container flex="33">
+                            <label class="control-label" for="description">Price/Unit</label>
+                            <input type="number" data-ng-model="workorder.item.price_per_unit" id="price_per_unit">
+                        </md-input-container>
+                        </md-content>
+
+                        <label class="control-label" for="total">Total:</label>
+                        <b ng-show="item.qty*item.price_per_unit">{{item.qty*item.price_per_unit | currency  : '$' : fractionSize: 2}}</b>
+                        <md-content layout="column" layout-padding layout-align="center center">
+                            <md-button type="button" class="md-primary md-raised" ng-click="addItem(item)">
+                                <i class="fa fa-plus"></i>&nbsp;Add Item
+                            </md-button>
+                        </md-content>                                              
+                    </md-content>               
+                          
+            <md-divider></md-divider>
+            <md-subheader>Work Order Line Items</md-subheader>
+            <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                    </th>
+                                    <th>
+                                        Description
+                                    </th>
+                                    <th>
+                                        Qty.
+                                    </th>
+                                    <th>
+                                        Units
+                                    </th>
+                                    <th>
+                                        Price/Unit
+                                    </th>
+                                    <th>
+                                        Total
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in workorder.line_items">
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-sm" ng-click="deleteItem(item)">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        {{item.description}}
+                                    </td>
+                                    <td>
+                                        {{item.qty}}
+                                    </td>
+                                    <td>
+                                        {{item.uom}}
+                                    </td>
+                                    <td>
+                                        {{item.price_per_unit}}
+                                    </td>
+                                    <td>
+                                        <span ng-if="item.price_per_unit * item.qty">{{item.price_per_unit * item.qty | currency  : '$' : fractionSize: 2}}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <th colspan="4">
+                                </th>
+                                <th>
+                                    Total
+                                </th>
+                                <th>
+                                    <span ng-if="itemTotal">{{itemTotal | currency  : '$' : fractionSize: 2}}</span>
+                                </th>
+                            </tfoot>
+            </table>
+            <div layout="row" layout-align="center center">
+                <md-button type="submit" class="md-primary md-raised">Save New Work Order</md-button>
+            </div>
+            </form>
+        </md-card>
+    </md-content>
+</div>
+
+
+    <script type="text/ng-template" id="accountsModal.html">
+        <md-dialog aria-label="Accounts Dialog">
+            <md-toolbar class="md-whiteframe-z1">
+                <div class="md-toolbar-tools">
+                    Accounts
                 </div>
-				<div data-ng-show="error" class="text-danger">
-					<strong data-ng-bind="error"></strong>
-				</div>
-            </fieldset>
-        </form>
-    </div>
+            </md-toolbar>
+            <md-content>
+                <md-radio-group ng-model="selected.account">
+                    <md-radio-button ng-repeat="a in accounts" ng-value="a">
+                         {{a.name}} - {{a.address.street}}, {{a.address.city}}, {{a.address.province_state}}
+                    </md-radio-button>
+                </md-radio-group>
+            </md-content>
+            <div class="md-actions">
+                <md-button class="md-raised" ng-click="cancel()">
+                    Cancel
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="ok()">
+                    Select
+                </md-button>
+            </div>
+        </md-dialog>
+    </script>
+
+    <script type="text/ng-template" id="contactsModal.html">
+        <md-dialog aria-label="Conacts Dialog">
+            <md-toolbar class="md-whiteframe-z1">
+                <div class="md-toolbar-tools">
+                    Contacts
+                </div>
+            </md-toolbar>
+            <md-content>
+                <div ng-repeat="c in contacts">
+                    <md-checkbox name="contacts" ng-model="c.checked" ng-change="updateContactList()"> {{c.name.first}}, {{c.name.last}} - {{c.address.street}}, {{c.address.city}}, {{c.address.province_state}}
+                    </md-checkbox>
+                </div>
+            </md-content>
+            <div class="md-actions">
+                <md-button class="md-raised" ng-click="cancel()">
+                    Cancel
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="ok()">
+                    Select
+                </md-button>
+            </div>
+        </md-dialog>
+    </script>
 </section>

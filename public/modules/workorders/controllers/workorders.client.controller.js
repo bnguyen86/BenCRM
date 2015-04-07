@@ -1,9 +1,10 @@
 'use strict';
 
 // Workorders controller
-angular.module('workorders').controller('WorkordersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Workorders', 'Accounts', '$mdDialog',
-	function($scope, $stateParams, $location, Authentication, Workorders, Accounts, $mdDialog) {
+angular.module('workorders').controller('WorkordersController', ['$scope', '$stateParams', '$location', '$mdDialog', 'Authentication', 'Workorders', 'Accounts',
+	function($scope, $stateParams, $location, $mdDialog, Authentication, Workorders, Accounts) {
 		$scope.authentication = Authentication;
+		//$scope.workorder.account = null;
 
 		// Create new Workorder
 		$scope.create = function() {
@@ -20,7 +21,7 @@ angular.module('workorders').controller('WorkordersController', ['$scope', '$sta
 				number: this.number,
 				line_items: $scope.items,
 				contacts: contactsList,
-				account: this.account._id
+				account: $scope.workorder.account._id
 			});
 
 			// Redirect after save
@@ -71,7 +72,14 @@ angular.module('workorders').controller('WorkordersController', ['$scope', '$sta
 		$scope.findOne = function() {
 			$scope.workorder = Workorders.get({ 
 				workorderId: $stateParams.workorderId
+			}, function(){
+				if($scope.workorder.account){
+					$scope.workorder.account = Accounts.get({
+					accountId: $scope.workorder.account._id
+				});
+			}
 			});
+			
 		};
 
 		//Add line item
@@ -99,7 +107,7 @@ angular.module('workorders').controller('WorkordersController', ['$scope', '$sta
 
 		$scope.findTotal = function(itemArray){
 			var total = 0;
-			if(itemArray !== (null && undefined)){
+			if(itemArray){
 				for(var i = 0 ; i < itemArray.length ; i++){
 					total += itemArray[i].qty * itemArray[i].price_per_unit;
 				}
@@ -123,7 +131,10 @@ angular.module('workorders').controller('WorkordersController', ['$scope', '$sta
 		        
 		    })
 		    .then(function(account) {
-		            $scope.account = Accounts.get({ 
+		    		if($scope.workorder.account._id !== account._id){
+		    			$scope.workorder.contacts = [];
+		    		}
+		            $scope.workorder.account = Accounts.get({ 
 						accountId: account._id
 					});
 		        },
@@ -134,7 +145,7 @@ angular.module('workorders').controller('WorkordersController', ['$scope', '$sta
 
 		//Open contacts modal
 		$scope.openContacts = function(event){
-			if($scope.account === null || $scope.account === undefined){
+			if(!$scope.workorder.account){
 				console.log('No account chosen');
 				return null;
 			}
@@ -145,13 +156,13 @@ angular.module('workorders').controller('WorkordersController', ['$scope', '$sta
 		        controller: 'ContactsModalController',
 		        resolve: {
 		        	contactList: function(){
-		        		return $scope.account.contacts;		        		
+		        		return $scope.workorder.account.contacts;		        		
 		        	}
 		        }
 		        
 		    })
 		    .then(function(contacts) {
-		            $scope.contacts = contacts;
+		            $scope.workorder.contacts = contacts;
 		        },
 		        function() {
 		            console.log('Modal dismissed at: ' + new Date());
