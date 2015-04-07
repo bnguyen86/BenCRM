@@ -37,6 +37,10 @@ var UserSchema = new Schema({
 		default: '',
 		validate: [validateLocalStrategyProperty, 'Please fill in your last name']
 	},
+	company: {
+		type: Schema.ObjectId,
+		ref: 'Company'
+	},
 	displayName: {
 		type: String,
 		trim: true
