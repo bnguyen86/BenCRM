@@ -13,6 +13,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 				$scope.authentication.user = response;
 
 				// And redirect to the index page
+				//TODO: if creating a new company, then redirect to create company page
+				//If not, then ask user for the admin email
 				$location.path('/');
 			}).error(function(response) {
 				$scope.error = response.message;

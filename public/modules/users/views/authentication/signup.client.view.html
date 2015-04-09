@@ -41,6 +41,16 @@
 					<label for="password">Password</label>
 					<input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Password">
 				</div>
+				<div class="form-group">
+					<md-radio-group ng-model="credentials.createCompany">
+						<md-radio-button value="create" aria-label="Create New Company">
+						    I will be registering a new company
+						</md-radio-button>
+						<md-radio-button value="join" aria-label="Create New Company">
+						    I will be joining a company that is already registered
+						</md-radio-button>
+					</md-radio-group>
+				</div>
 				<div class="text-center form-group">
 					<button type="submit" class="btn btn-large btn-primary">Sign up</button>&nbsp; or&nbsp;
 					<a href="/#!/signin" class="show-signup">Sign in</a>

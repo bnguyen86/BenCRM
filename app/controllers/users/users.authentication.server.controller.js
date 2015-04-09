@@ -24,6 +24,14 @@ exports.signup = function(req, res) {
 	user.provider = 'local';
 	user.displayName = user.firstName + ' ' + user.lastName;
 
+	//if the user is registering a new company, then they get admin role
+	if(req.body.createCompany === 'create'){
+		user.roles = ['admin','user'];
+	}
+
+	//delete this field so it doesn't get saved into the record
+	delete user.createCompany;
+
 	// Then save the user 
 	user.save(function(err) {
 		if (err) {
