@@ -1,8 +1,8 @@
 'use strict';
 
 // Jobs controller
-angular.module('jobs').controller('JobsController', ['$scope', '$stateParams', '$location', '$mdDialog', 'Authentication', 'Jobs', 'Accounts',
-	function($scope, $stateParams, $location, $mdDialog, Authentication, Jobs, Accounts) {
+angular.module('jobs').controller('JobsController', ['$scope', '$stateParams', '$location', '$mdDialog', 'Authentication', 'Jobs', 'Accounts', 'Socket',
+	function($scope, $stateParams, $location, $mdDialog, Authentication, Jobs, Accounts, Socket) {
 		$scope.authentication = Authentication;
 		$scope.statusOptions = ['Open', 'Completed', 'Assigned', 'Cancelled'];
 		$scope.job = {
@@ -175,5 +175,9 @@ angular.module('jobs').controller('JobsController', ['$scope', '$stateParams', '
 		            console.log('Modal dismissed at: ' + new Date());
 		        });
 		};
+
+		Socket.on('job.created', function(job) {
+		    $scope.jobs.push(job);
+		});
 	}
 ]);

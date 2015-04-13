@@ -21,6 +21,10 @@ exports.create = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
+			//socket.io stuff
+			var socketio = req.app.get('socketio');
+			socketio.sockets.emit('job.created', job);
+
 			res.jsonp(job);
 		}
 	});

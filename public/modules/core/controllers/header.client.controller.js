@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$scope', 'Authentication', 'Menus', '$mdSidenav',
-	function($scope, Authentication, Menus, $mdSidenav) {
+angular.module('core').controller('HeaderController', ['$scope', 'Authentication', 'Menus', '$mdSidenav', '$mdToast', 'Socket',
+	function($scope, Authentication, Menus, $mdSidenav, $mdToast, Socket) {
 		$scope.authentication = Authentication;
 		$scope.isCollapsed = false;
 		$scope.menu = Menus.getMenu('topbar');
@@ -28,6 +28,11 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 		// Collapsing the menu after navigation
 		$scope.$on('$stateChangeSuccess', function() {
 			$scope.isCollapsed = false;
+		});
+
+		Socket.on('job.created', function(job) {
+		    console.log(job);
+
 		});
 	}
 ]);
