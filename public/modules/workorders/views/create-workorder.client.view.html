@@ -26,15 +26,15 @@
                         </md-button>
                         <md-input-container>
                             <label class="control-label" for="account">Account</label>
-                            <input type="text" readonly="readonly" data-ng-model="account.name">
+                            <input type="text" readonly="readonly" data-ng-model="workorder.account.name">
                         </md-input-container>
-                        <input hide data-ng-model="account._id" id="account" placeholder="Account">
+                        <input hide data-ng-model="workorder.account._id" id="account" placeholder="Account">
                     </md-content>
                     <md-content flex="50">
-                        <md-button type="button" class="md-icon-button md-primary md-raised" ng-click="openContacts($event)" ng-disabled="account == null">
+                        <md-button type="button" class="md-icon-button md-primary md-raised" ng-click="openContacts($event)" ng-disabled="workorder.account._id == null">
                             <i class="fa fa-plus"></i>&nbsp;Add Contacts
                         </md-button>
-                        <ul ng-repeat="contact in contacts">
+                        <ul ng-repeat="contact in workorder.contacts">
                             <li>
                                 {{contact.name.last}}, {{contact.name.first}} - {{contact.phone}}
                             </li>

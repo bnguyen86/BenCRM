@@ -31,7 +31,7 @@
                         <input hide data-ng-model="workorder.account._id" id="account" placeholder="Account">
                     </md-content>
                     <md-content flex="50">
-                        <md-button type="button" class="md-icon-button md-primary md-raised" ng-click="openContacts($event)" ng-disabled="workorder.account == null">
+                        <md-button type="button" class="md-icon-button md-primary md-raised" ng-click="openContacts($event)" ng-disabled="workorder.account._id == null">
                             <i class="fa fa-plus"></i>&nbsp;Add Contacts
                         </md-button>
                         <ul ng-repeat="contact in workorder.contacts">

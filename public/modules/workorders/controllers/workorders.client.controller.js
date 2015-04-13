@@ -4,15 +4,23 @@
 angular.module('workorders').controller('WorkordersController', ['$scope', '$stateParams', '$location', '$mdDialog', 'Authentication', 'Workorders', 'Accounts',
 	function($scope, $stateParams, $location, $mdDialog, Authentication, Workorders, Accounts) {
 		$scope.authentication = Authentication;
-		//$scope.workorder.account = null;
+		$scope.workorder = {
+			account : {
+				name : null,
+				_id : null
+			},
+			contacts : []
+		};
+
+
 
 		// Create new Workorder
 		$scope.create = function() {
 			// Create new Workorder object
 			var contactsList = [];
-			if($scope.contacts !== (null && undefined)){				
-				for(var i = 0 ; i < $scope.contacts.length ; i++){
-					contactsList.push($scope.contacts[i]._id);
+			if($scope.workorder.contacts && $scope.workorder.contacts.length > 0){				
+				for(var i = 0 ; i < $scope.workorder.contacts.length ; i++){
+					contactsList.push($scope.workorder.contacts[i]._id);
 				}
 			}
 

@@ -13,7 +13,11 @@ var JobSchema = new Schema({
 	name: {
 		type: String,
 		default: '',
-		required: 'Please fill Job name',
+		trim: true
+	},
+	description: {
+		type: String,
+		default: '',
 		trim: true
 	},
 	created: {
@@ -23,6 +27,23 @@ var JobSchema = new Schema({
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'
+	},
+	contacts: [{
+		type: Schema.ObjectId,
+		ref: 'Contact'
+	}],
+	account: {
+		type: Schema.ObjectId,
+		ref: 'Account'
+	},
+	assigned: {
+		type: Schema.ObjectId,
+		ref: 'User'
+	},
+	status:{
+		type: String,
+		enum: ['Open', 'Completed', 'Assigned', 'Cancelled'],
+		default: 'Open'
 	}
 });
 
