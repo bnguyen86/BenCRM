@@ -50,6 +50,11 @@ var WorkorderSchema = new Schema({
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'
+	},
+	company: {
+		type: Schema.ObjectId,
+		ref: 'Company',
+		required: 'Object must be associated with company'
 	}
 });
 

@@ -39,7 +39,8 @@ var UserSchema = new Schema({
 	},
 	company: {
 		type: Schema.ObjectId,
-		ref: 'Company'
+		ref: 'Company',
+		required: 'Object must be associated with company'
 	},
 	displayName: {
 		type: String,
@@ -49,6 +50,7 @@ var UserSchema = new Schema({
 		type: String,
 		trim: true,
 		default: '',
+		unique: 'Email already in system',
 		validate: [validateLocalStrategyProperty, 'Please fill in your email'],
 		match: [/.+\@.+\..+/, 'Please fill a valid email address']
 	},

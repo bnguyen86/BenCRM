@@ -62,7 +62,13 @@ var ContactSchema = new Schema({
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'
+	},
+	company: {
+		type: Schema.ObjectId,
+		ref: 'Company',
+		required: 'Object must be associated with company'
 	}
+
 });
 
 mongoose.model('Contact', ContactSchema);

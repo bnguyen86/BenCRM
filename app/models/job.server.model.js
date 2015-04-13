@@ -44,6 +44,11 @@ var JobSchema = new Schema({
 		type: String,
 		enum: ['Open', 'Completed', 'Assigned', 'Cancelled'],
 		default: 'Open'
+	},
+	company: {
+		type: Schema.ObjectId,
+		ref: 'Company',
+		required: 'Object must be associated with company'
 	}
 });
 

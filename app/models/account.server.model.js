@@ -55,7 +55,15 @@ var AccountSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'User'
 	},
-	contacts: [Schema.Types.Mixed]
+	contacts: [{
+		type: Schema.ObjectId,
+		ref: 'Contact'
+	}],
+	company: {
+		type: Schema.ObjectId,
+		ref: 'Company',
+		required: 'Object must be associated with company'
+	}
 });
 
 mongoose.model('Account', AccountSchema);
