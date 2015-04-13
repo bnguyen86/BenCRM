@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Company = mongoose.model('Company'),
+	User = mongoose.model('User'),
 	_ = require('lodash');
 
 /**
@@ -21,6 +22,15 @@ exports.create = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
+
+			User.update({ _id: req.user._id }, { $set: { company: company._id }}, function(err){
+				if(err){
+					return res.status(400).send({
+						message: errorHandler.getErrorMessage(err)
+					});
+				}
+			});
+
 			res.jsonp(company);
 		}
 	});

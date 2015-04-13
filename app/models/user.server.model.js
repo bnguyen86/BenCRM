@@ -39,8 +39,7 @@ var UserSchema = new Schema({
 	},
 	company: {
 		type: Schema.ObjectId,
-		ref: 'Company',
-		required: 'Object must be associated with company'
+		ref: 'Company'
 	},
 	displayName: {
 		type: String,

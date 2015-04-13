@@ -8,6 +8,11 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 		if ($scope.authentication.user) $location.path('/');
 
 		$scope.signup = function() {
+			if($scope.credentials.password !== $scope.password){
+				$scope.error = 'Passwords do not match';
+				return null;
+			}
+
 			$http.post('/auth/signup', $scope.credentials).success(function(response) {
 				
 				//If the user entered an email for the admin, then send a request
@@ -29,14 +34,11 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 				// And redirect to the index page
 				//TODO: if creating a new company, then redirect to create company page
 				//If not, then ask user for the admin email
-
 				if(_.includes($scope.authentication.user.roles, 'admin')){
 					$location.path('companies/create');
 				} else {
 					$location.path('/');
 				}
-
-				$location.path('/');
 			}).error(function(response) {
 				$scope.error = response.message;
 			});
