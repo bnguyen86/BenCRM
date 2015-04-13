@@ -31,7 +31,8 @@ module.exports = {
 				'public/lib/angular-ui-utils/ui-utils.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
 				'//cdn.socket.io/socket.io-1.3.5.js',
-				'public/lib/angular-socket-io/socket.min.js'
+				'public/lib/angular-socket-io/socket.min.js',
+				'//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.6.0/lodash.min.js'
 			]
 		},
 		css: [

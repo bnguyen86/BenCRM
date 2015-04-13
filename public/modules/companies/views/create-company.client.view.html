@@ -1,23 +1,23 @@
-<section data-ng-controller="CompaniesController">
-    <div class="page-header">
-        <h1>New Company</h1>
-    </div>
-    <div class="col-md-12">
-        <form class="form-horizontal" data-ng-submit="create()" novalidate>
-            <fieldset>
-                <div class="form-group">
-                    <label class="control-label" for="name">Name</label>
-                    <div class="controls">
-                        <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
-                    </div>
+<div layout="column" layout-fill layout-align="center center" data-ng-controller="CompaniesController">
+    <md-content layout-fill>
+        <md-card>
+            <md-toolbar class="md-theme-indigo" class="md-whiteframe-z1">
+                <div class="md-toolbar-tools">
+                    Register a new Company
                 </div>
-                <div class="form-group">
-                    <input type="submit" class="btn btn-default">
+            </md-toolbar>
+            <form ng-submit="create()">
+                <md-content layout="row" layout-padding>
+                    <md-input-container flex>
+                        <label class="control-label" for="name">Company Name</label>
+                        <input type="text" data-ng-model="name" id="name">                            
+                    </md-input-container>
+                </md-content>
+                <md-divider></md-divider>
+                <div layout="row" layout-align="center center">
+                    <md-button type="submit" class="md-primary md-raised">Register Company</md-button>
                 </div>
-				<div data-ng-show="error" class="text-danger">
-					<strong data-ng-bind="error"></strong>
-				</div>
-            </fieldset>
-        </form>
-    </div>
-</section>
+            </form>
+        </md-card>
+    </md-content>
+</div>

@@ -51,6 +51,12 @@
 						</md-radio-button>
 					</md-radio-group>
 				</div>
+				<div ng-show="credentials.createCompany === 'join'">
+					<md-input-container>
+					    <label>Administrator Email</label>
+					    <input type="email" ng-model="adminEmail">
+					</md-input-container>
+				</div>
 				<div class="text-center form-group">
 					<button type="submit" class="btn btn-large btn-primary">Sign up</button>&nbsp; or&nbsp;
 					<a href="/#!/signin" class="show-signup">Sign in</a>
