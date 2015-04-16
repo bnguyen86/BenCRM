@@ -40,7 +40,9 @@ exports.create = function(req, res) {
  * Show the current Company
  */
 exports.read = function(req, res) {
-	res.jsonp(req.company);
+	if(req.company._id.toString() !== req.user.company.toString()){
+		return res.status(403).send('User is not authorized');
+	} else res.jsonp(req.company);
 };
 
 /**
@@ -83,6 +85,11 @@ exports.delete = function(req, res) {
  * List of Companies
  */
 exports.list = function(req, res) { 
+	if (!_.intersection(req.user.roles, ['super_admin']).length){
+		return res.status(403).send({
+			message: 'User is not authorized'
+		});
+	}
 	Company.find().sort('-created').populate('user', 'displayName').exec(function(err, companies) {
 		if (err) {
 			return res.status(400).send({
@@ -110,8 +117,16 @@ exports.companyByID = function(req, res, next, id) {
  * Company authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.company.user.id !== req.user.id) {
-		return res.status(403).send('User is not authorized');
+	// if (req.company.user.id !== req.user.id) {
+	// 	return res.status(403).send('User is not authorized');
+	// }
+
+	if (_.intersection(req.user.roles, ['admin', 'super_admin']).length) {
+		return next();
+	} else {
+		return res.status(403).send({
+			message: 'User is not authorized'
+		});
 	}
 	next();
 };

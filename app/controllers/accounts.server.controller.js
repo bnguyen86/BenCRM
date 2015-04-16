@@ -14,6 +14,7 @@ var mongoose = require('mongoose'),
 exports.create = function(req, res) {
 	var account = new Account(req.body);
 	account.user = req.user;
+	account.company = req.user.company;
 
 	account.save(function(err) {
 		if (err) {
@@ -30,14 +31,17 @@ exports.create = function(req, res) {
  * Show the current Account
  */
 exports.read = function(req, res) {
-	res.jsonp(req.account);
+	if(errorHandler.checkCompany(req.account, req, res))
+		res.jsonp(req.account);
 };
 
 /**
  * Update a Account
  */
 exports.update = function(req, res) {
-	var account = req.account ;
+	var account = req.account ;	
+	if(!errorHandler.checkCompany(account, req, res))
+		return;
 
 	account = _.extend(account , req.body);
 
@@ -57,6 +61,8 @@ exports.update = function(req, res) {
  */
 exports.delete = function(req, res) {
 	var account = req.account ;
+	if(!errorHandler.checkCompany(account, req, res))
+		return;
 
 	account.remove(function(err) {
 		if (err) {
@@ -73,7 +79,7 @@ exports.delete = function(req, res) {
  * List of Accounts
  */
 exports.list = function(req, res) { 
-	Account.find().sort('-created').populate('user', 'displayName').exec(function(err, accounts) {
+	Account.find().where('company').equals(req.user.company).sort('-created').populate('user', 'displayName').exec(function(err, accounts) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -90,7 +96,7 @@ exports.list = function(req, res) {
 exports.accountByID = function(req, res, next, id) { 
 	Account.findById(id).populate('user', 'displayName').exec(function(err, account) {
 		if (err) return next(err);
-		if (! account) return next(new Error('Failed to load Account ' + id));
+		if (! account) return next(new Error('Failed to load Account ' + id));		
 		req.account = account ;
 
 		var Contact = mongoose.model('Contact');

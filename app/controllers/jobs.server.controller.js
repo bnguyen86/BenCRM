@@ -14,6 +14,7 @@ var mongoose = require('mongoose'),
 exports.create = function(req, res) {
 	var job = new Job(req.body);
 	job.user = req.user;
+	job.company = req.user.company;
 
 	job.save(function(err) {
 		if (err) {
@@ -34,7 +35,8 @@ exports.create = function(req, res) {
  * Show the current Job
  */
 exports.read = function(req, res) {
-	res.jsonp(req.job);
+	if(errorHandler.checkCompany(req.job, req, res))
+		res.jsonp(req.job);
 };
 
 /**
@@ -42,6 +44,8 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
 	var job = req.job ;
+	if(!errorHandler.checkCompany(job, req, res))
+		return;
 
 	job = _.extend(job , req.body);
 
@@ -61,6 +65,8 @@ exports.update = function(req, res) {
  */
 exports.delete = function(req, res) {
 	var job = req.job ;
+	if(!errorHandler.checkCompany(job, req, res))
+		return;
 
 	job.remove(function(err) {
 		if (err) {
@@ -77,7 +83,7 @@ exports.delete = function(req, res) {
  * List of Jobs
  */
 exports.list = function(req, res) { 
-	Job.find().sort('-created').populate('user', 'displayName').exec(function(err, jobs) {
+	Job.find().where('company').equals(req.user.company).sort('-created').populate('user', 'displayName').exec(function(err, jobs) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

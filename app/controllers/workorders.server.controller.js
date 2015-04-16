@@ -14,6 +14,7 @@ var mongoose = require('mongoose'),
 exports.create = function(req, res) {
 	var workorder = new Workorder(req.body);
 	workorder.user = req.user;
+	workorder.company = req.user.company;
 
 	workorder.save(function(err) {
 		if (err) {
@@ -30,7 +31,8 @@ exports.create = function(req, res) {
  * Show the current Workorder
  */
 exports.read = function(req, res) {
-	res.jsonp(req.workorder);
+	if(errorHandler.checkCompany(req.workorder, req, res))
+		res.jsonp(req.workorder);
 };
 
 /**
@@ -38,6 +40,8 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
 	var workorder = req.workorder ;
+	if(!errorHandler.checkCompany(workorder, req, res))
+		return;
 
 	workorder = _.extend(workorder , req.body);
 
@@ -73,7 +77,7 @@ exports.delete = function(req, res) {
  * List of Workorders
  */
 exports.list = function(req, res) { 
-	Workorder.find().sort('-created').populate('user', 'displayName').exec(function(err, workorders) {
+	Workorder.find().where('company').equals(req.user.company).sort('-created').populate('user', 'displayName').exec(function(err, workorders) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

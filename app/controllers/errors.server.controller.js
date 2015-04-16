@@ -40,3 +40,12 @@ exports.getErrorMessage = function(err) {
 
 	return message;
 };
+
+//Custom method for checking if an object belongs to the user's company
+//Returns true if the company matches and false if it does not
+exports.checkCompany = function(obj, req, res){
+	if(obj.company.toString() !== req.user.company.toString()){
+		res.status(403).send('User is not authorized');
+		return false;
+	} else return true;
+};

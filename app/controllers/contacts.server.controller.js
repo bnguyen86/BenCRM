@@ -14,6 +14,7 @@ var mongoose = require('mongoose'),
 exports.create = function(req, res) {
 	var contact = new Contact(req.body);
 	contact.user = req.user;
+	contact.company = req.user.company;
 
 	contact.save(function(err) {
 		if (err) {
@@ -30,7 +31,8 @@ exports.create = function(req, res) {
  * Show the current Contact
  */
 exports.read = function(req, res) {
-	res.jsonp(req.contact);
+	if(errorHandler.checkCompany(req.contact, req, res))
+		res.jsonp(req.contact);
 };
 
 /**
@@ -38,6 +40,8 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
 	var contact = req.contact ;
+	if(!errorHandler.checkCompany(contact, req, res))
+		return;
 
 	contact = _.extend(contact , req.body);
 
@@ -57,6 +61,8 @@ exports.update = function(req, res) {
  */
 exports.delete = function(req, res) {
 	var contact = req.contact ;
+	if(!errorHandler.checkCompany(contact, req, res))
+		return;
 
 	contact.remove(function(err) {
 		if (err) {
@@ -73,7 +79,7 @@ exports.delete = function(req, res) {
  * List of Contacts
  */
 exports.list = function(req, res) { 
-	Contact.find().sort('-created').populate('user', 'displayName').exec(function(err, contacts) {
+	Contact.find().where('company').equals(req.user.company).sort('-created').populate('user', 'displayName').exec(function(err, contacts) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

@@ -14,6 +14,7 @@ var mongoose = require('mongoose'),
 exports.create = function(req, res) {
 	var regRequest = new RegRequest(req.body);
 	regRequest.user = req.user;
+	regRequest.company = req.user.company;
 
 	regRequest.save(function(err) {
 		if (err) {
@@ -30,7 +31,8 @@ exports.create = function(req, res) {
  * Show the current Reg request
  */
 exports.read = function(req, res) {
-	res.jsonp(req.regRequest);
+	if(errorHandler.checkCompany(req.regRequest, req, res))
+		res.jsonp(req.regRequest);
 };
 
 /**
@@ -38,6 +40,8 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
 	var regRequest = req.regRequest ;
+	if(!errorHandler.checkCompany(regRequest, req, res))
+		return;
 
 	regRequest = _.extend(regRequest , req.body);
 
@@ -57,6 +61,8 @@ exports.update = function(req, res) {
  */
 exports.delete = function(req, res) {
 	var regRequest = req.regRequest ;
+	if(!errorHandler.checkCompany(regRequest, req, res))
+		return;
 
 	regRequest.remove(function(err) {
 		if (err) {
@@ -73,7 +79,7 @@ exports.delete = function(req, res) {
  * List of Reg requests
  */
 exports.list = function(req, res) { 
-	RegRequest.find().sort('-created').populate('user', 'displayName').exec(function(err, regRequests) {
+	RegRequest.find().where('company').equals(req.user.company).sort('-created').populate('user', 'displayName').exec(function(err, regRequests) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

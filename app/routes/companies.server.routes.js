@@ -7,7 +7,7 @@ module.exports = function(app) {
 	// Companies Routes
 	app.route('/companies')
 		.get(companies.list)
-		.post(users.requiresLogin, companies.create);
+		.post(users.requiresLogin, companies.hasAuthorization, companies.create);
 
 	app.route('/companies/:companyId')
 		.get(companies.read)
