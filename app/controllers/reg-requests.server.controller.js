@@ -39,21 +39,29 @@ exports.read = function(req, res) {
  * Update a Reg request
  */
 exports.update = function(req, res) {
-	var regRequest = req.regRequest ;
-	if(!errorHandler.checkCompany(regRequest, req, res))
-		return;
+	if(!_.intersection(req.user.roles, ['admin','super_admin']).length)
+		return res.status(403).send('User is not authorized');
+	if(_.intersection(req.user.roles, ['super_admin']).length || 
+			req.user._id.toString() === req.regRequest.admin.toString()){	
+		var regRequest = req.regRequest ;
+		if(!errorHandler.checkCompany(regRequest, req, res))
+			return;
 
-	regRequest = _.extend(regRequest , req.body);
+		regRequest = _.extend(regRequest , req.body);
 
-	regRequest.save(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(regRequest);
-		}
-	});
+		regRequest.save(function(err) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				//IF APPROVED, THEN ADD COMPANY TO THE USER WHO CREATED THE REQUEST
+				//IF DENIED, THEN MARK AS INACTIVE
+
+				res.jsonp(regRequest);
+			}
+		});
+	} else return res.status(403).send('User is not authorized');
 };
 
 /**
@@ -78,7 +86,10 @@ exports.delete = function(req, res) {
 /**
  * List of Reg requests
  */
-exports.list = function(req, res) { 
+exports.list = function(req, res) {
+	if(!_.intersection(req.user.roles, ['admin','super_admin']).length)
+		return res.status(403).send('User is not authorized');
+
 	RegRequest.find().where('company').equals(req.user.company).sort('-created').populate('user', 'displayName').exec(function(err, regRequests) {
 		if (err) {
 			return res.status(400).send({

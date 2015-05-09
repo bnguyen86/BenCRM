@@ -13,8 +13,9 @@ var _ = require('lodash'),
  * Signup
  */
 exports.signup = function(req, res) {
-	// For security measurement we remove the roles from the req.body object
+	// For security measurement we remove the roles and active flag from the req.body object
 	delete req.body.roles;
+	delete req.body.active;
 
 	// Init Variables
 	var user = new User(req.body);
@@ -27,6 +28,9 @@ exports.signup = function(req, res) {
 	//if the user is registering a new company, then they get admin role
 	if(req.body.createCompany === 'create'){
 		user.roles = ['admin','user'];
+		user.active = true;
+	} else {
+		//TODO: Create new req-request
 	}
 
 	//delete this field so it doesn't get saved into the record

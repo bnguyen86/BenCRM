@@ -41,6 +41,10 @@ var UserSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'Company'
 	},
+	active: {
+		type: Boolean,
+		default: false
+	},
 	displayName: {
 		type: String,
 		trim: true
