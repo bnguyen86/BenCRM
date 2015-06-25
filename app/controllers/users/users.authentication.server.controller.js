@@ -31,6 +31,7 @@ exports.signup = function(req, res) {
 		user.active = true;
 	} else {
 		//TODO: Create new req-request
+		console.log('something');
 	}
 
 	//delete this field so it doesn't get saved into the record
